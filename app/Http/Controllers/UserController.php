@@ -66,7 +66,7 @@ class UserController extends Controller
         return view('user.help', compact('help_category', 'prefixvalue'));
     }
 
-    function help_store(Request $request, AppMailer $mailer, Ticket $ticket)
+    function help_store(Request $request, AppMailer $mailer)
     {
         // dd($request->all());
         $fileName = "";
@@ -91,7 +91,7 @@ class UserController extends Controller
 
         $help->save();
 
-        $mailer->sendHelpInformation(Auth::user(), $help, $ticket);
+        $mailer->sendHelpInformation(Auth::user(), $help);
 
         return redirect()->back()->with("success", "A new SRN: $help->case_id has been generated.!");
     }
@@ -135,8 +135,9 @@ class UserController extends Controller
         return view('user.ticket.details_ticket', compact('ticket_detail', 'prefixvalue', 'status'));
     }
 
-    function ticket_update(Request $request, $id, $mailer)
+    function ticket_update(Request $request, $id, AppMailer $mailer)
     {
+        $ticket = Ticket::get();
         $ticket_update = Ticket::find($id);
         $request->validate([
             'deadline'  => 'required',
@@ -149,10 +150,15 @@ class UserController extends Controller
         $result = $ticket_update->save();
 
         // $result = $ticket_update->update($request->all());
-
-        if ($request->input('status') == "closed") {
-            $mailer->sendStatusInformation(Auth::user());
+        if($ticket_update->status == '5')
+        {
+            // dd($ticket_update->status);
+            $mailer->sendStatusInformation(Auth::user(),$ticket);
         }
+
+        // if ($ticket_update->status = request('status') == "closed") {
+        //     $mailer->sendStatusInformation(Auth::user(),$ticket_update);
+        // }
 
         if ($result) {
             return redirect()->back()->with("status", "Your SRN: $ticket_update->job has been updated.");
@@ -161,7 +167,7 @@ class UserController extends Controller
         }
     }
 
-    function comment_ticket(Request $request, $id)
+    function comment_ticket(Request $request, $id, AppMailer $mailer)
     {
         $fileName = "";
         $this->validate($request, [
@@ -199,6 +205,8 @@ class UserController extends Controller
         Ticket::select('commentnos')->where('id', $id)->Increment('commentnos');
         // $comment = $comment->commentnos + 1;
         $comment->save();
+
+        // $mailer->sendCommetInformation(Auth::user(), $ticket);
 
         // $result = $edit->save();
 

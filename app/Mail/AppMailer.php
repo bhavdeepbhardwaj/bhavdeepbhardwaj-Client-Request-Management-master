@@ -9,7 +9,8 @@ use Illuminate\Queue\SerializesModels;
 use App\Models\Help;
 use App\Models\Ticket;
 use Illuminate\Contracts\Mail\Mailer;
-// use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Response;
 
 class AppMailer
@@ -23,39 +24,46 @@ class AppMailer
     public $view;
     public $data = [];
 
-
-    /**
-     * Create a new message instance.
-     *
-     * @return void
-     */
     public function __construct(Mailer $mailer)
     {
         //
         $this->mailer = $mailer;
     }
 
+    // Help Ticket Informatiion For Admin | Client | Resource | Employee
 
-    public function sendHelpInformation($user, Help $help, Ticket $ticket)
+    public function sendHelpInformation($user, Help $help)
     {
         $this->to = ['bhavdeepbhardwaj555@gmail.com'];
         $this->subject = "$help->title (Ticket ID: $help->case_id)";
         $this->view = 'emails.help';
-        $this->data = compact('user', 'help','ticket');
+        $this->data = compact('user', 'help');
         return $this->deliver();
     }
 
-    /**
-     * Build the message.
-     *
-     * @return $this
-     */
+    // Admin Ticket Update information
+
+    public function sendStatusInformation($user, $ticket)
+    {
+        $ticket = Ticket::first();
+
+        $this->to = ['bhavdeepbhardwaj555@gmail.com'];
+        $this->subject = "[SRN $ticket->job] $ticket->title";
+        $this->view = 'emails.status_info';
+        $this->data = compact('user', 'ticket');
+        return $this->deliver();
+    }
+
+    // User Comment on Client Ticket
+
+    // public sendCommetInformation($user,)
+
 
     public function deliver()
     {
-        $this->mailer->send($this->view, $this->data, function($message) {
+        $this->mailer->send($this->view, $this->data, function ($message) {
             $message->from($this->fromAddress, $this->fromName)
-                    ->to($this->to)->subject($this->subject);
+                ->to($this->to)->subject($this->subject);
         });
     }
 
