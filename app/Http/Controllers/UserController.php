@@ -72,7 +72,7 @@ class UserController extends Controller
         $fileName = "";
         $this->validate($request, [
             'summary' => 'required',
-            'reference_file' => 'mimes:jpg,jpeg,png,pdf,xlsx,xlx,ppt,pptx,csv,zip|max:307200',
+            'reference_file.*' => 'mimes:jpg,jpeg,png,pdf,xlsx,xlx,ppt,pptx,csv,zip|max:307200',
 
         ]);
 
@@ -149,16 +149,10 @@ class UserController extends Controller
         // dd($ticket_update);
         $result = $ticket_update->save();
 
-        // $result = $ticket_update->update($request->all());
-        if($ticket_update->status == '5')
-        {
+        if ($ticket_update->status == '5') {
             // dd($ticket_update->status);
-            $mailer->sendStatusInformation(Auth::user(),$ticket);
+            $mailer->sendStatusInformation(Auth::user(), $ticket);
         }
-
-        // if ($ticket_update->status = request('status') == "closed") {
-        //     $mailer->sendStatusInformation(Auth::user(),$ticket_update);
-        // }
 
         if ($result) {
             return redirect()->back()->with("status", "Your SRN: $ticket_update->job has been updated.");
@@ -169,63 +163,60 @@ class UserController extends Controller
 
     function comment_ticket(Request $request, $id, AppMailer $mailer)
     {
-        $fileName = "";
+        $picture = "";
+        $imageNameArr = [];
         $this->validate($request, [
-            'reference' => 'mimes:jpg,jpeg,png,pdf,xlsx,xlx,ppt,pptx,csv,zip|max:307200',
+            'reference.*' => 'mimes:jpg,jpeg,png,pdf,xlsx,xlx,ppt,pptx,csv,zip|max:307200',
         ]);
 
         if ($request->hasFile('reference')) {
-            $image = $request->file('reference')->getClientOriginalName();
-            $fileName = $request->reference->move(date('d-m-Y') . '-Comment-Reference', $image);
+            $picture = array();
+            $imageNameArr = [];
+            foreach ($request->reference as $file) {
+                // you can also use the original name
+                $image = $file->getClientOriginalName();
+                $imageNameArr[] = $image;
+                // Upload file to public path in images directory
+                $fileName = $file->move(date('d-m-Y') . '-Comment-Reference', $image);
+                // Database operation
+                $array[] = $fileName;
+                $picture = implode(",", $array); //Image separated by comma
+            }
         }
 
-        $ticket = new Comment;
-        $ticket->user_id            = $request->user_id;
-        $ticket->job                = $request->job;
-        $ticket->job_no             = $request->job_no;
-        $ticket->comment            = $request->comment;
-        $ticket->comment_ticket     = $request->comment_ticket;
-        $ticket->reference          = $fileName;
+        $comment = new Comment;
+        $comment->user_id            = $request->user_id;
+        $comment->job                = $request->job;
+        $comment->job_no             = $request->job_no;
+        $comment->comment            = $request->comment;
+        $comment->comment_ticket     = $request->comment_ticket;
+        $comment->reference          = $picture;
 
-        $result = $ticket->save();
+        $ticket = Ticket::find($id);
 
-        // dd($request->all());
+        $getdata = \App\Models\Ticket::find($id);
 
+        if ($getdata->status == "5") {
+            return redirect()->back()->with("error", "Request $ticket->job has been Closed.");
+        } else {
+            Ticket::select('commentnos')->where('id', $id)->Increment('commentnos');
+            $ticket->save();
+            $result = $comment->save();
+        }
 
-        // $edit = new Comment([
-        //     'user_id'           => $request->user_id,
-        //     'job'               => $request->job,
-        //     'job_no'            => $request->job_no,
-        //     'comment'           => $request->comment,
-        //     'reference'         => $fileName,
-        //     'comment_ticket'    => $request->comment_ticket,
-        // ]);
-
-        $comment = Ticket::find($id);
-        Ticket::select('commentnos')->where('id', $id)->Increment('commentnos');
-        // $comment = $comment->commentnos + 1;
-        $comment->save();
-
-        // $mailer->sendCommetInformation(Auth::user(), $ticket);
-
-        // $result = $edit->save();
+        $mailer->sendCommetInformation(Auth::user(), $comment, $ticket);
 
         $number = DB::table('comments')
             ->orderBy('created_at', 'desc')
             ->first();
 
         $num = sprintf('%02d', intval($number->id));
-        $ids = sprintf('%03d', intval($id));
-
-
 
         if ($result) {
-            return redirect()->back()->with("status", "An Edit Request ADNESEA$ids-E$num has been submitted.");
+            return redirect()->back()->with("status", "An Edit Request $ticket->job-E$num has been submitted.");
         } else {
             return ["result" => "failed "];
         }
-        // return view('client.ticket.details_ticket')->with("status", "An Edit Request ADNESEA$id-E$num has been submitted.");
-
     }
 
     function show_comment($id)

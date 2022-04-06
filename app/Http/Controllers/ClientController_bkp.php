@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\AppMailer;
 use App\Models\Brand;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -140,29 +139,24 @@ class ClientController extends Controller
         return view('client.ticket.create_ticket', compact('brands', 'countries', 'categories', 'prioritys', 'status', 'prefixvalue'));
     }
 
-    public function ticket_store(Request $request, AppMailer $mailer)
+    public function ticket_store(Request $request)
     {
         // dd($request->all());
-        $picture = "";
-        $imageNameArr = [];
+        // $getdata = Ticket::where('user_id', $request->user_id)->latest('job_no')->first();
+        // $job_no = $getdata->job_no;
+        // $job_no = $job_no + 1;
+
+        $fileName = "";
         $this->validate($request, [
-            'reference.*' => 'mimes:jpg,jpeg,png,pdf,xlsx,xlx,ppt,pptx,csv,zip|max:307200',
+            'reference' => 'mimes:jpg,jpeg,png,pdf,xlsx,xlx,ppt,pptx,csv,zip|max:307200',
+
         ]);
 
         if ($request->hasFile('reference')) {
-            $picture = array();
-            $imageNameArr = [];
-            foreach ($request->reference as $file) {
-                // you can also use the original name
-                $image = $file->getClientOriginalName();
-                $imageNameArr[] = $image;
-                // Upload file to public path in images directory
-                $fileName = $file->move(date('d-m-Y') . '-Ticket-Reference', $image);
-                // Database operation
-                $array[] = $fileName;
-                $picture = implode(",", $array); //Image separated by comma
-            }
+            $image = $request->file('reference')->getClientOriginalName();
+            $fileName = $request->reference->move(date('d-m-Y') . '-Ticket-Reference', $image);
         }
+
 
         $ticket = new Ticket;
         $ticket->user_id        = $request->user_id;
@@ -176,74 +170,26 @@ class ClientController extends Controller
         $ticket->title          = $request->title;
         $ticket->summary        = $request->summary;
         $ticket->objective      = $request->objective;
-        $ticket->reference      = $picture;
+        $ticket->reference      = $fileName;
         $ticket->otherinfo      = $request->otherinfo;
 
-        // $ticket = new Ticket([
-        //     'user_id'              => $request->input('user_id'),
-        //     'job'          => $request->input('job'),
-        //     'job_no'            => $request->input('job_no'),
-        //     'brand'            => $request->input('brand'),
-        //     'country'          => $request->input('country'),
-        //     'title'            => $request->input('title'),
-        //     'category'          => $request->input('category'),
-        //     'priority'         => $request->input('priority'),
-        //     'status'         => $request->input('status'),
-        //     'summary'          => $request->input('summary'),
-        //     'objective'        => $request->input('objective'),
-        //     'reference'        => $picture,
-        //     'otherinfo'        => $request->input('otherinfo'),
-        // ]);
+        $result = $ticket->save();
 
-        // dd($ticket);
+        // $pending = Ticket::where('status', 'Pending from Client')->count();
+        // dd($pending);
 
-        // 4 is key of Pending from Client status table
+        // $mailer->sendEditInformation(Auth::user(), $edit);
 
-        $pending = Ticket::where('status', '4')->count();
+        $number = DB::table('tickets')
+            ->orderBy('created_at', 'desc')
+            ->first();
+        $num = sprintf('%03d', intval($number->id));
 
-        // 3 is key of High priority table
-        // 3 is key of Processing status table
-
-        $high = Ticket::where('priority', '3')
-            ->where('status', '3')->count();
-
-        // 2 is key of High priority table
-
-        $medium = Ticket::where('priority', '2')
-            ->where('status', '3')->count();
-
-        // 1 is key of High priority table
-
-        $low = Ticket::where('priority', '1')
-            ->where('status', '3')->count();
-
-        if ($pending < 5) {
-
-            if ($request->input('priority') == '3' &&  $high > 5) {
-                return redirect()->back()->with("alert", "You have exceeded the maximum High priority tickets i.e. 5");
-            } elseif ($request->input('priority') == '2' && $medium > 8) {
-                return redirect()->back()->with("alert", "You have exceeded the maximum Medium priority i.e. 8");
-            } elseif ($request->input('priority') == '1' && $low > 10) {
-                return redirect()->back()->with("alert", "You have exceeded the maximum Low priority i.e. 10");
-            } else {
-
-                $result = $ticket->save();
-
-                $mailer->sendTicketInformation(Auth::user(), $ticket);
-
-                $number = DB::table('tickets')
-                    ->orderBy('created_at', 'desc')
-                    ->first();
-                $num = sprintf('%03d', intval($number->id));
-
-                if ($result) {
-                    return redirect()->back()->with("success", "A new SRN: $ticket->job has been generated.!");
-                } else {
-                    return ["result" => "failed "];
-                }
-            }
+        if ($result) {
+            // return redirect()->back()->with("success", "A new SRN: $ticket->job$num has been generated.!");
+            return redirect()->back()->with("success", "A new SRN: $ticket->job has been generated.!");
         } else {
-            return redirect()->back()->with("warning", "Please clear all the remaining tickets i.e. Pending from client in order to generate new tickets.");
+            return ["result" => "failed "];
         }
     }
 
@@ -280,121 +226,59 @@ class ClientController extends Controller
         return view('client.ticket.show_ticket', compact('tickets'));
     }
 
-    // function comment_ticket(Request $request, $id)
-    // {
-    //     // dd($request->all());
-
-    //     $fileName = "";
-    //     $this->validate($request, [
-    //         'comment'   => 'required',
-    //         'reference' => 'mimes:jpg,jpeg,png,pdf,xlsx,xlx,ppt,pptx,csv,zip|max:307200',
-    //     ]);
-
-    //     if ($request->hasFile('reference')) {
-    //         $image = $request->file('reference')->getClientOriginalName();
-    //         $fileName = $request->reference->move(date('d-m-Y') . '-Comment-Reference', $image);
-    //     }
-
-    //     // $edit = new Comment([
-    //     //     'user_id'           => $request->user_id,
-    //     //     'job'               => $request->job,
-    //     //     'job_no'            => $request->job_no,
-    //     //     'comment'           => $request->comment,
-    //     //     'reference'         => $fileName,
-    //     //     'comment_ticket'    => $request->comment_ticket,
-    //     // ]);
-
-    //     $ticket = new Comment;
-    //     $ticket->user_id            = $request->user_id;
-    //     $ticket->job                = $request->job;
-    //     $ticket->job_no             = $request->job_no;
-    //     $ticket->comment            = $request->comment;
-    //     $ticket->comment_ticket     = $request->comment_ticket;
-    //     $ticket->reference          = $fileName;
-
-    //     $result = $ticket->save();
-
-    //     $comment = Ticket::find($id);
-    //     Ticket::select('commentnos')->where('id', $id)->Increment('commentnos');
-    //     // $comment = $comment->commentnos + 1;
-    //     $comment->save();
-
-    //     // dd($edit);
-
-    //     // $mailer->sendEditInformation(Auth::user(), $edit);
-
-
-    //     $number = DB::table('comments')
-    //         ->orderBy('created_at', 'desc')
-    //         ->first();
-
-    //     $num = sprintf('%02d', intval($number->id));
-    //     $ids = sprintf('%03d', intval($id));
-
-    //     return redirect()->back()->with("status", "An Edit Request ADNESEA$ids-E$num has been submitted.");
-    // }
-
     function comment_ticket(Request $request, $id)
     {
-        $picture = "";
-        $imageNameArr = [];
+        // dd($request->all());
+
+        $fileName = "";
         $this->validate($request, [
             'comment'   => 'required',
-            'reference.*' => 'mimes:jpg,jpeg,png,pdf,xlsx,xlx,ppt,pptx,csv,zip|max:307200',
+            'reference' => 'mimes:jpg,jpeg,png,pdf,xlsx,xlx,ppt,pptx,csv,zip|max:307200',
         ]);
 
         if ($request->hasFile('reference')) {
-            $picture = array();
-            $imageNameArr = [];
-            foreach ($request->reference as $file) {
-                // you can also use the original name
-                $image = $file->getClientOriginalName();
-                $imageNameArr[] = $image;
-                // Upload file to public path in images directory
-                $fileName = $file->move(date('d-m-Y') . '-Comment-Reference', $image);
-                // Database operation
-                $array[] = $fileName;
-                $picture = implode(",", $array); //Image separated by comma
-            }
+            $image = $request->file('reference')->getClientOriginalName();
+            $fileName = $request->reference->move(date('d-m-Y') . '-Comment-Reference', $image);
         }
 
-        $comment = new Comment;
-        $comment->user_id            = $request->user_id;
-        $comment->job                = $request->job;
-        $comment->job_no             = $request->job_no;
-        $comment->comment            = $request->comment;
-        $comment->comment_ticket     = $request->comment_ticket;
-        $comment->reference          = $picture;
+        // $edit = new Comment([
+        //     'user_id'           => $request->user_id,
+        //     'job'               => $request->job,
+        //     'job_no'            => $request->job_no,
+        //     'comment'           => $request->comment,
+        //     'reference'         => $fileName,
+        //     'comment_ticket'    => $request->comment_ticket,
+        // ]);
 
-        $ticket = Ticket::find($id);
+        $ticket = new Comment;
+        $ticket->user_id            = $request->user_id;
+        $ticket->job                = $request->job;
+        $ticket->job_no             = $request->job_no;
+        $ticket->comment            = $request->comment;
+        $ticket->comment_ticket     = $request->comment_ticket;
+        $ticket->reference          = $fileName;
 
-        $getdata = \App\Models\Ticket::find($id);
+        $result = $ticket->save();
 
-        if ($getdata->status == "5") {
-            return redirect()->back()->with("error", "Request $ticket->job has been Closed.");
-        } else {
-            Ticket::select('commentnos')->where('id', $id)->Increment('commentnos');
-            $ticket->save();
-            $result = $comment->save();
-        }
+        $comment = Ticket::find($id);
+        Ticket::select('commentnos')->where('id', $id)->Increment('commentnos');
+        // $comment = $comment->commentnos + 1;
+        $comment->save();
 
-        // $mailer->sendCommetInformation(Auth::user(), $comment, $ticket);
+        // dd($edit);
+
+        // $mailer->sendEditInformation(Auth::user(), $edit);
+
 
         $number = DB::table('comments')
             ->orderBy('created_at', 'desc')
             ->first();
 
         $num = sprintf('%02d', intval($number->id));
+        $ids = sprintf('%03d', intval($id));
 
-        if ($result) {
-            return redirect()->back()->with("status", "An Edit Request $ticket->job-E$num has been submitted.");
-        } else {
-            return ["result" => "failed "];
-        }
-        // return view('client.ticket.details_ticket')->with("status", "An Edit Request ADNESEA$id-E$num has been submitted.");
-
+        return redirect()->back()->with("status", "An Edit Request ADNESEA$ids-E$num has been submitted.");
     }
-
 
     function view_comment()
     {

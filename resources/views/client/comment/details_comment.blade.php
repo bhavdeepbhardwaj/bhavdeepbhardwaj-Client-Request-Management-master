@@ -56,6 +56,8 @@
                 <div class="col-12 grid-margin">
                     <div class="card">
                         <div class="faq-block card-body">
+                            @include('client.component.alert')
+
                             <div class="container-fluid py-2">
                                 <h5 class="mb-0">Lasts Update At:- {{ $comment_record->updated_at }}</h5>
                             </div>

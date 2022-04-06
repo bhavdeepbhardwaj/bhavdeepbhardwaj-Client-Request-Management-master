@@ -210,7 +210,7 @@
                     {!! csrf_field() !!}
                     <div class="form-group row">
                         <div class="col-md-4">
-                            <h4>Deadline:</h4>
+                            <h4>Deadline</h4>
                         </div>
 
                         <div class="col-md-4">

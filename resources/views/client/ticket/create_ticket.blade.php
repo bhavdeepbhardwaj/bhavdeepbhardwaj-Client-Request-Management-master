@@ -135,7 +135,7 @@
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label class="form-label" for="formFileSm8">Reference File Upload</label>
-                                <input class="form-control form-control-sm" id="formFileSm8" type="file" name="reference">
+                                <input class="form-control form-control-sm" id="formFileSm8" type="file" name="reference[]" multiple>
                                 <p class="files">* Supported file format: doc, docx, jpg, jpeg, png, pdf, xlsx,
                                     xlx, ppt, pptx, csv, zip<br />Multiple files should have the same extension or in a zip
                                     file.</p>

@@ -53,6 +53,7 @@
                 <div class="col-12 grid-margin">
                     <div class="card">
                         <div class="faq-block card-body">
+                            @include('user.component.alert')
                             <div class="container-fluid py-2">
                                 <h5 class="mb-0">Lasts Update At:- {{ $comment_record->updated_at }}</h5>
                             </div>
@@ -79,7 +80,22 @@
                                             <div class="card-body">
                                                 {!! $value->comment !!}
                                             </div>
+                                            <div class="card-body">
+                                                @if ($value->reference != '')
+                                                    @foreach (explode(',', $value->reference) as $ref)
+                                                        <div class="">
+                                                            <a class="btn btn-primary"href="{{ '/' . $ref }}" target="_blank"
+                                                                download="{!! $ref !!}">Download
+                                                                File</a>
+                                                        </div>
+                                                        <br/>
+                                                    @endforeach
+                                                @else
+                                                    {{-- <div class="">N/A</div> --}}
+                                                @endif
+                                            </div>
                                         </div>
+
                                     </div>
                                 @endforeach
                                 <div>

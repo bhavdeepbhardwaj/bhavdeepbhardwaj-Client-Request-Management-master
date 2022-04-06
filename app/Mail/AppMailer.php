@@ -56,7 +56,25 @@ class AppMailer
 
     // User Comment on Client Ticket
 
-    // public sendCommetInformation($user,)
+    public function sendCommetInformation($user, $comment, Ticket $ticket)
+    {
+        $this->to = ['bhavdeepbhardwaj555@gmail.com'];
+        $this->subject = "[Comment SRN $comment->comment_ticket]";
+        $this->view = 'emails.comment_info';
+        $this->data = compact('user', 'comment', 'ticket');
+        return $this->deliver();
+    }
+
+    // Client Create Ticket Information
+
+    public function sendTicketInformation($user, Ticket $ticket)
+    {
+        $this->to = ['bhavdeepbhardwaj555@gmail.com'];
+        $this->subject = "[SRN $ticket->job] $ticket->title";
+        $this->view = 'emails.ticket_info';
+        $this->data = compact('user', 'ticket');
+        return $this->deliver();
+    }
 
 
     public function deliver()

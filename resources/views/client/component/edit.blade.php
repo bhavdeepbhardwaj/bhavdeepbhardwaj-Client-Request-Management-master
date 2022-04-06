@@ -5,7 +5,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalScrollableTitle">Edit Ticket No.
-                    <strong>{{ $ticket_detail->job }}{{ $num = sprintf('%03d', intval($ticket_detail->id)) }}</strong>
+                    <strong>{{ $ticket_detail->job }}</strong>
                 </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -36,10 +36,16 @@
 
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label class="form-label" for="exampleSummary5">Comments /
+                                <label class="form-label{{ $errors->has('comment') ? ' has-error' : '' }}" for="exampleSummary5">Comments /
                                     Creative Brief</label>
                                 {{-- <textarea class="form-control" id="exampleSummary5" rows="4" name="summary"></textarea> --}}
                                 <textarea id='tinyMceExample3' name="comment" placeholder="Comments / Creative Brief"></textarea>
+                                @if ($errors->has('comment'))
+                                    <br />
+                                    <div class="alert alert-danger">
+                                        <i class="ti-info-alt"></i> Comment Can Not Be Empty
+                                    </div>
+                                @endif
 
                             </div>
                         </div>
@@ -48,7 +54,7 @@
                             <div class="mb-3">
                                 <label class="form-label" for="formFileSm8">Reference File
                                     Upload</label>
-                                <input class="form-control form-control-sm" id="formFileSm8" type="file" name="reference">
+                                <input class="form-control form-control-sm" id="formFileSm8" type="file" name="reference[]" multiple>
                                 <p class="files">*
                                     Supported file format: doc,
                                     docx, jpg, jpeg, png, pdf, xlsx,

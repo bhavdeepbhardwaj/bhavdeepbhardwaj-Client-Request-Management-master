@@ -46,7 +46,7 @@
                                 <label class="form-label" for="formFileSm8">Reference File
                                     Upload</label>
                                 <input class="form-control form-control-sm" id="formFileSm8" type="file"
-                                    name="reference">
+                                    name="reference[]" multiple>
                                 <p class="files">*
                                     Supported file format: doc,
                                     docx, jpg, jpeg, png, pdf, xlsx,
