@@ -77,7 +77,7 @@ class ClientController extends Controller
         return view('client.help', compact('help_category', 'prefixvalue'));
     }
 
-    function help_store(Request $request)
+    function help_store(Request $request, AppMailer $mailer)
     {
         // dd($request->all());
         $fileName = "";
@@ -102,7 +102,7 @@ class ClientController extends Controller
 
         $result = $help->save();
 
-        // $mailer->sendEditInformation(Auth::user(), $edit);
+        $mailer->sendHelpInformation(Auth::user(), $help);
 
         if ($result) {
             return redirect()->back()->with("success", "A new SRN: $help->case_id has been generated.!");
@@ -179,24 +179,6 @@ class ClientController extends Controller
         $ticket->reference      = $picture;
         $ticket->otherinfo      = $request->otherinfo;
 
-        // $ticket = new Ticket([
-        //     'user_id'              => $request->input('user_id'),
-        //     'job'          => $request->input('job'),
-        //     'job_no'            => $request->input('job_no'),
-        //     'brand'            => $request->input('brand'),
-        //     'country'          => $request->input('country'),
-        //     'title'            => $request->input('title'),
-        //     'category'          => $request->input('category'),
-        //     'priority'         => $request->input('priority'),
-        //     'status'         => $request->input('status'),
-        //     'summary'          => $request->input('summary'),
-        //     'objective'        => $request->input('objective'),
-        //     'reference'        => $picture,
-        //     'otherinfo'        => $request->input('otherinfo'),
-        // ]);
-
-        // dd($ticket);
-
         // 4 is key of Pending from Client status table
 
         $pending = Ticket::where('status', '4')->count();
@@ -268,73 +250,11 @@ class ClientController extends Controller
 
     function show_ticket()
     {
-        // $comments = DB::table('comments')->join('tickets', 'tickets.id', '=', 'comments.job_no')
-        //     ->select('comments.reference as comment_reference', 'comments.comment', 'comments.job')->get();
-        // $nos = DB::table('comments')->distinct('id')->count('job_no');
-        // $comments = DB::table('tickets')->join('comments', 'comments.job_no', '=', 'tickets.id')
-        //     ->select('comments.reference as comment_reference', 'comments.comment', 'comments.job')->get();
-        // dd($nos);
-        // return view('client.ticket.show_ticket', compact('tickets'));
-
         $tickets = Ticket::latest()->orderBy('id', 'desc')->get();
         return view('client.ticket.show_ticket', compact('tickets'));
     }
 
-    // function comment_ticket(Request $request, $id)
-    // {
-    //     // dd($request->all());
-
-    //     $fileName = "";
-    //     $this->validate($request, [
-    //         'comment'   => 'required',
-    //         'reference' => 'mimes:jpg,jpeg,png,pdf,xlsx,xlx,ppt,pptx,csv,zip|max:307200',
-    //     ]);
-
-    //     if ($request->hasFile('reference')) {
-    //         $image = $request->file('reference')->getClientOriginalName();
-    //         $fileName = $request->reference->move(date('d-m-Y') . '-Comment-Reference', $image);
-    //     }
-
-    //     // $edit = new Comment([
-    //     //     'user_id'           => $request->user_id,
-    //     //     'job'               => $request->job,
-    //     //     'job_no'            => $request->job_no,
-    //     //     'comment'           => $request->comment,
-    //     //     'reference'         => $fileName,
-    //     //     'comment_ticket'    => $request->comment_ticket,
-    //     // ]);
-
-    //     $ticket = new Comment;
-    //     $ticket->user_id            = $request->user_id;
-    //     $ticket->job                = $request->job;
-    //     $ticket->job_no             = $request->job_no;
-    //     $ticket->comment            = $request->comment;
-    //     $ticket->comment_ticket     = $request->comment_ticket;
-    //     $ticket->reference          = $fileName;
-
-    //     $result = $ticket->save();
-
-    //     $comment = Ticket::find($id);
-    //     Ticket::select('commentnos')->where('id', $id)->Increment('commentnos');
-    //     // $comment = $comment->commentnos + 1;
-    //     $comment->save();
-
-    //     // dd($edit);
-
-    //     // $mailer->sendEditInformation(Auth::user(), $edit);
-
-
-    //     $number = DB::table('comments')
-    //         ->orderBy('created_at', 'desc')
-    //         ->first();
-
-    //     $num = sprintf('%02d', intval($number->id));
-    //     $ids = sprintf('%03d', intval($id));
-
-    //     return redirect()->back()->with("status", "An Edit Request ADNESEA$ids-E$num has been submitted.");
-    // }
-
-    function comment_ticket(Request $request, $id)
+    function comment_ticket(Request $request, $id, AppMailer $mailer)
     {
         $picture = "";
         $imageNameArr = [];
@@ -378,7 +298,7 @@ class ClientController extends Controller
             $result = $comment->save();
         }
 
-        // $mailer->sendCommetInformation(Auth::user(), $comment, $ticket);
+        $mailer->sendCommetInformation(Auth::user(), $comment, $ticket);
 
         $number = DB::table('comments')
             ->orderBy('created_at', 'desc')
@@ -391,8 +311,6 @@ class ClientController extends Controller
         } else {
             return ["result" => "failed "];
         }
-        // return view('client.ticket.details_ticket')->with("status", "An Edit Request ADNESEA$id-E$num has been submitted.");
-
     }
 
 

@@ -11,7 +11,6 @@
     </p>
 
     <p><strong>Name:</strong> {{ ucfirst($user->name) }}</p>
-    <p><strong>Brand:</strong> {{ ucfirst($ticket->job) }}</p>
     <p><strong>Title:</strong> {{ ucfirst($help->title) }}</p>
     <p><strong>Case ID:</strong> {{ ucfirst($help->case_id) }}</p>
     <p><strong>Summary:</strong> {!! $help->summary !!}</p>

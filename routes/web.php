@@ -53,7 +53,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['isAdmin', 'auth', 'PreventB
 });
 
 
-Route::group(['prefix' => 'user', 'middleware' => ['isUser', 'auth', 'PreventBackHistory']], function () {
+Route::group(['prefix' => 'agency', 'middleware' => ['isUser', 'auth', 'PreventBackHistory']], function () {
     Route::get('/', [UserController::class, 'index']);
     Route::get('dashboard', [UserController::class, 'index'])->name('user.dashboard');
     Route::get('profile', [UserController::class, 'profile'])->name('user.profile');
