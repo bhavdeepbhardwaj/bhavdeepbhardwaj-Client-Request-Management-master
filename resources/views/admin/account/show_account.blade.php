@@ -1,5 +1,21 @@
 @extends('layouts.master')
 
+@section('title')
+    @lang('title.super_admin_show_user_client')
+@endsection
+
+@section('css')
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="../../../../vendors/datatables.net-bs4/dataTables.bootstrap4.css">
+    <link rel="stylesheet" href="../../../../vendors/feather/feather.css">
+    <link rel="stylesheet" href="../../../../vendors/mdi/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="../../../../vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" href="../../../../vendors/typicons/typicons.css">
+    <link rel="stylesheet" href="../../../../vendors/simple-line-icons/css/simple-line-icons.css">
+    <link rel="stylesheet" href="../../../../vendors/css/vendor.bundle.base.css">
+    <!-- endinject -->
+@endsection
+
 @section('content')
     <div class="row">
         <div class="col-sm-12">
@@ -33,7 +49,7 @@
         <div class="card">
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-hover">
+                    <table id="order-listing" class="table table-hover table-striped">
                         <thead>
                             <tr>
                                 <th>Name</th>
@@ -67,4 +83,12 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('js')
+    <!-- Custom js for this page-->
+    <script src="../../../../vendors/datatables.net/jquery.dataTables.js"></script>
+    <script src="../../../../vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+    <script src="{{ asset('js/data-table.js ') }}"></script>
+    <!-- End custom js for this page-->
 @endsection

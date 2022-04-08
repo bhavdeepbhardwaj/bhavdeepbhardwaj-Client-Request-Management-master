@@ -46,7 +46,7 @@ class RedirectIfAuthenticated
             {
                 return redirect()->route('resource.dashboard');
             }
-    
+
         }
 
         return $next($request);

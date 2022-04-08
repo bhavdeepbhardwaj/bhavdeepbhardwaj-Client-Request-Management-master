@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('title')
-    @lang('title.admin_setting')
+    @lang('title.super_admin_setting')
 @endsection
 
 @section('content')

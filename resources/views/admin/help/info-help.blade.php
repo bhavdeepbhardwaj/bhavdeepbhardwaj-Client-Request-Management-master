@@ -1,7 +1,16 @@
 @extends('layouts.master')
 
 @section('title')
-    @lang('title.admin_details_info_help')
+    @lang('title.super_admin_info_help')
+@endsection
+
+@section('css')
+    <style>
+        p {
+            font-size: 1rem;
+        }
+
+    </style>
 @endsection
 
 @section('content')
@@ -42,7 +51,8 @@
                     </div>
 
                     <div class="col-md-8">
-                        <div class="">Date</div>
+                        <div class="">{{ date('d-m-Y h:i:s A', strtotime($helps->created_at)) }}
+                        </div>
                     </div>
                 </div>
 
@@ -52,7 +62,7 @@
                     </div>
 
                     <div class="col-md-8">
-                        <div class="">User</div>
+                        <div class="">{{ $helps->user }}</div>
                     </div>
                 </div>
 
@@ -62,7 +72,7 @@
                     </div>
 
                     <div class="col-md-8">
-                        <div class="">categories</div>
+                        <div class=""><?php $categories = \App\Models\HelpCategory::where('id', $helps->helpCategory_id)->first(); ?> {{ $categories->name }}</div>
                     </div>
                 </div>
 
@@ -72,7 +82,7 @@
                     </div>
 
                     <div class="col-md-8">
-                        <div class="">Case ID</div>
+                        <div class="">{{ $helps->case_id }}</div>
                     </div>
                 </div>
 
@@ -82,7 +92,7 @@
                     </div>
 
                     <div class="col-md-8">
-                        <div class="">Title</div>
+                        <div class="">{{ $helps->title }}</div>
                     </div>
                 </div>
 
@@ -92,7 +102,7 @@
                     </div>
 
                     <div class="col-md-8">
-                        <div class="">Summary</div>
+                        <div class="">{!! $helps->summary !!}</div>
                     </div>
                 </div>
 
@@ -102,7 +112,18 @@
                     </div>
 
                     <div class="col-md-8">
-                        <div class=""><a href="">Download</a></div>
+                        <div class="">
+                            @if ($helps->reference != '')
+                                <td>
+                                    @foreach (explode(',', $helps->reference) as $ref)
+                                        <a href="{{ '/' . $ref }}" target="_blank"
+                                            download="{!! $ref !!}">Download File</a><br />
+                                    @endforeach
+                                </td>
+                            @else
+                                <td>N/A</td>
+                            @endif
+                        </div>
                     </div>
                 </div>
 

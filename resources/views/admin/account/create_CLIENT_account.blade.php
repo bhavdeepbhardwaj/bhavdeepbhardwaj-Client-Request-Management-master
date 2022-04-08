@@ -1,5 +1,9 @@
 @extends('layouts.master')
 
+@section('title')
+    @lang('title.super_admin_client_create')
+@endsection
+
 @section('content')
     <div class="row">
         <div class="col-sm-12">

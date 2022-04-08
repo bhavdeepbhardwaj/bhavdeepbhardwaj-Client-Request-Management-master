@@ -37,7 +37,7 @@ Route::post('changePassword', [HomeController::class, 'changePasswordSave'])->na
 
 
 
-Route::group(['prefix' => 'admin', 'middleware' => ['isAdmin', 'auth', 'PreventBackHistory']], function () {
+Route::group(['prefix' => 'SuperAdmin', 'middleware' => ['isAdmin', 'auth', 'PreventBackHistory']], function () {
     Route::get('/', [AdminController::class, 'index']);
     Route::get('dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::get('profile', [AdminController::class, 'profile'])->name('admin.profile');
@@ -45,7 +45,14 @@ Route::group(['prefix' => 'admin', 'middleware' => ['isAdmin', 'auth', 'PreventB
     Route::get('reports', [AdminController::class, 'reports'])->name('admin.reports');
     Route::get('ticket', [AdminController::class, 'ticket'])->name('admin.ticket');
     Route::get('help', [AdminController::class, 'help'])->name('admin.help');
-    Route::get('info-help', [AdminController::class, 'info_help'])->name('admin.info-help');
+    Route::get('roles', [AdminController::class, 'role'])->name('admin.role');
+    Route::get('category', [AdminController::class, 'category'])->name('admin.category');
+    Route::get('country', [AdminController::class, 'country'])->name('admin.country');
+    Route::get('helpCategory', [AdminController::class, 'helpCategory'])->name('admin.helpCategory');
+    Route::get('priorities', [AdminController::class, 'priorities'])->name('admin.priorities');
+    Route::get('statuses', [AdminController::class, 'statuses'])->name('admin.statuses');
+
+    Route::get('help-info/{id}', [AdminController::class, 'info_help'])->name('admin.info-help');
     Route::get('show_account', [AdminController::class, 'show_account'])->name('admin.show_account');
     Route::get('create_ADMIN_account', [AdminController::class, 'create_ADMIN_account'])->name('admin.create_ADMIN_account');
     Route::get('create_CLIENT_account', [AdminController::class, 'create_CLIENT_account'])->name('admin.create_CLIENT_account');

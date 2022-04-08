@@ -1,7 +1,7 @@
 @extends('layouts.parent')
 
 @section('title')
-    @lang('title.client_dashbord')
+    @lang('title.client_dashboard')
 @endsection
 
 @section('content')

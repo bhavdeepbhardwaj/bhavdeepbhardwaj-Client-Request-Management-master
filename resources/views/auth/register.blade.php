@@ -9,6 +9,8 @@
         <div class="content-wrapper d-flex align-items-stretch auth auth-img-bg">
             <div class="row flex-grow">
                 <div class="col-lg-6 d-flex align-items-center justify-content-center">
+                @include('admin.component.alert')
+
                     <div class="auth-form-transparent text-left p-3">
                         <div class="brand-logo">
                             <img src="{{ asset('images/logo.png') }}" alt="logo">
@@ -16,7 +18,7 @@
                         <h4>New here?</h4>
                         <h6 class="fw-light">Join us today! It takes only few steps</h6>
                         <form class="pt-3" method="POST" action="{{ route('register') }}">
-                            @csrf
+                            {!! csrf_field() !!}
                             <div class="form-group">
                                 <label>Username</label>
                                 <div class="input-group">

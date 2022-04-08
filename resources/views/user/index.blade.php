@@ -1,7 +1,7 @@
 @extends('layouts.parent')
 
 @section('title')
-    @lang('title.user_dashbord')
+    @lang('title.user_dashboard')
 @endsection
 @section('content')
     <div class="row">

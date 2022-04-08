@@ -1,8 +1,9 @@
 @extends('layouts.master')
 
 @section('title')
-    @lang('title.admin_profile')
+    @lang('title.super_admin_profile')
 @endsection
+
 @section('content')
     <div class="row">
         <div class="col-sm-12">

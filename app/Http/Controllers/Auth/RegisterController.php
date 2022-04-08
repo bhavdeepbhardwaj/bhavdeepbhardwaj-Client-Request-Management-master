@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 
 
 
@@ -36,7 +37,8 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    // protected $redirectTo = RouteServiceProvider::HOME;
+    public $redirectTo;
 
     /**
      * Create a new controller instance.
@@ -54,7 +56,7 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
-    protected function validator(array $data)
+    public function validator(array $data)
     {
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
@@ -71,14 +73,14 @@ class RegisterController extends Controller
      */
 
 
-     protected function create(array $data)
+    public function create(array $data)
     {
         // dd($data);
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'role' =>2,
-            'prefix' =>$data['prefix'],
+            'role' =>3,
+            'prefix' =>'DEMO',
             'password' => Hash::make($data['password']),
         ]);
     }
@@ -105,6 +107,11 @@ class RegisterController extends Controller
                     : redirect($this->redirectPath());
     }
 
+    public function guard()
+    {
+        return Auth::guard();
+    }
+
     public function redirectPath()
     {
         if (method_exists($this, 'redirectTo')) {
@@ -112,9 +119,10 @@ class RegisterController extends Controller
         }
 
         return property_exists($this, 'redirectTo') ? $this->redirectTo : '/home';
+        // return redirect()->back()->with("status", "User is created.");
     }
 
-    protected function registered(Request $request, $user)
+    public function registered(Request $request, $user)
     {
         //
     }

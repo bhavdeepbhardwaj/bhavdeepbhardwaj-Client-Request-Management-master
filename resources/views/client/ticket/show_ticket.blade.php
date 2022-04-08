@@ -8,12 +8,12 @@
     <!-- plugins:css -->
     <link rel="stylesheet" href="../../../../vendors/datatables.net-bs4/dataTables.bootstrap4.css">
     <link rel="stylesheet" href="../../../../vendors/feather/feather.css">
-  <link rel="stylesheet" href="../../../../vendors/mdi/css/materialdesignicons.min.css">
-  <link rel="stylesheet" href="../../../../vendors/ti-icons/css/themify-icons.css">
-  <link rel="stylesheet" href="../../../../vendors/typicons/typicons.css">
-  <link rel="stylesheet" href="../../../../vendors/simple-line-icons/css/simple-line-icons.css">
-  <link rel="stylesheet" href="../../../../vendors/css/vendor.bundle.base.css">
-  <!-- endinject -->
+    <link rel="stylesheet" href="../../../../vendors/mdi/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="../../../../vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" href="../../../../vendors/typicons/typicons.css">
+    <link rel="stylesheet" href="../../../../vendors/simple-line-icons/css/simple-line-icons.css">
+    <link rel="stylesheet" href="../../../../vendors/css/vendor.bundle.base.css">
+    <!-- endinject -->
 @endsection
 
 @section('content')
@@ -80,8 +80,9 @@
                                                 {{ $countrys->name }}
                                             </td>
                                             <td>
-                                                <a
-                                                    href="{{ route('client.ticket.details_ticket', [$ticket_detail->id]) }}">{{ $ticket_detail->title }}</a>
+                                                <a href="{{ route('client.ticket.details_ticket', [$ticket_detail->id]) }}"
+                                                    style="text-decoration: none;">{{ $ticket_detail->title }}&nbsp;<i
+                                                        class="ti-eye"></i></a>
                                             </td>
 
                                             <td>

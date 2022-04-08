@@ -17,9 +17,21 @@ return [
     'forgot'                        => 'ASHPlan | Media | CRM | Rest Password',
     'reset'                         => 'ASHPlan | Media | CRM | Change Password',
 
+    // SuperAdmin Title's
+
+    'super_admin_dashboard'         => 'ASHPlan | Media | CRM | SuperAdmin | Dashboard',
+    'super_admin_report'            => 'ASHPlan | Media | CRM | SuperAdmin | Report',
+    'super_admin_help'              => 'ASHPlan | Media | CRM | SuperAdmin | Help | Desk',
+    'super_admin_info_help'         => 'ASHPlan | Media | CRM | SuperAdmin | Help | Info',
+    'super_admin_setting'           => 'ASHPlan | Media | CRM | SuperAdmin | Setting',
+    'super_admin_profile'           => 'ASHPlan | Media | CRM | SuperAdmin | Profile',
+    'super_admin_user_create'       => 'ASHPlan | Media | CRM | SuperAdmin | Create | User',
+    'super_admin_client_create'     => 'ASHPlan | Media | CRM | SuperAdmin | Create | Client',
+    'super_admin_show_user_client'  => 'ASHPlan | Media | CRM | SuperAdmin | Show | User | Client',
+
     // Admin Title's
 
-    'admin_dashbord'                 => 'ASHPlan | Media | CRM | Admin | Dashbord',
+    'admin_dashboard'                => 'ASHPlan | Media | CRM | Admin | Dashboard',
     'admin_report'                   => 'ASHPlan | Media | CRM | Admin | Report',
     'admin_ticket'                   => 'ASHPlan | Media | CRM | Admin | Show | Ticket',
     'admin_details_ticket'           => 'ASHPlan | Media | CRM | Admin | Details | Ticket',
@@ -31,7 +43,7 @@ return [
 
     // User Title's
 
-    'user_dashbord'                  => 'ASHPlan | Media | CRM | User | Dashbord',
+    'user_dashboard'                  => 'ASHPlan | Media | CRM | User | Dashboard',
     'user_report'                    => 'ASHPlan | Media | CRM | User | Report',
     'user_create_ticket'             => 'ASHPlan | Media | CRM | User | Create | Ticket',
     'user_show_ticket'               => 'ASHPlan | Media | CRM | User | Show | Ticket',
@@ -42,7 +54,7 @@ return [
 
     // Client Title's
 
-    'client_dashbord'                => 'ASHPlan | Media | CRM | Client | Dashbord',
+    'client_dashboard'                => 'ASHPlan | Media | CRM | Client | Dashboard',
     'client_report'                  => 'ASHPlan | Media | CRM | Client | Report',
     'client_create_ticket'           => 'ASHPlan | Media | CRM | Client | Create | Ticket',
     'client_edit_ticket'           => 'ASHPlan | Media | CRM | Client | Edit | Ticket',

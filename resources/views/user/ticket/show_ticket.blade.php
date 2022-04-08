@@ -73,8 +73,9 @@
                                                 {{ $countrys->name }}
                                             </td>
                                             <td>
-                                                <a
-                                                    href="{{ route('user.ticket.details_ticket', [$ticket_detail->id]) }}">{{ $ticket_detail->title }}</a>
+                                                <a href="{{ route('user.ticket.details_ticket', [$ticket_detail->id]) }}"
+                                                    style="text-decoration: none;">{{ $ticket_detail->title }}&nbsp;<i
+                                                        class="ti-eye"></i></a>
                                             </td>
 
                                             <td>
