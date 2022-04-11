@@ -77,14 +77,14 @@
         <li class="nav-item">
             <a class="nav-link " href="{{ route('admin.priorities') }}">
                 <i class="menu-icon mdi mdi-card-text-outline"></i>
-                <span class="menu-title">priorities</span>
+                <span class="menu-title">Priorities</span>
             </a>
         </li>
 
         <li class="nav-item">
             <a class="nav-link " href="{{ route('admin.statuses') }}">
                 <i class="menu-icon mdi mdi-card-text-outline"></i>
-                <span class="menu-title">statuses</span>
+                <span class="menu-title">Statuses</span>
             </a>
         </li>
     </ul>

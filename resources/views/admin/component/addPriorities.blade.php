@@ -12,15 +12,21 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form class="forms-sample" method="POST" action="" enctype="multipart/form-data">
+                <form class="forms-sample" method="POST" action="{{ route('store.prioritiesStore')}}" enctype="multipart/form-data">
                     {!! csrf_field() !!}
                     <div class="row">
 
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label class="form-label" for="name">Priority Name</label>
-                                <input type="text" class="form-control" id="name" placeholder="Status Name"
+                                <input type="text" class="form-control{{ $errors->has('name') ? ' has-error' : '' }}" id="name" placeholder="Priority Name"
                                     name="name" value="">
+                                    @if ($errors->has('name'))
+                                    <br />
+                                    <div class="alert alert-danger">
+                                        <i class="ti-info-alt"></i> Priority Name Can Not Be Empty
+                                    </div>
+                                @endif
                             </div>
                         </div>
 

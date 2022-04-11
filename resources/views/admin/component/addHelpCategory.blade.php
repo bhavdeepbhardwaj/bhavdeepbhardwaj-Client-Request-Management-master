@@ -12,27 +12,40 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form class="forms-sample" method="POST" action="" enctype="multipart/form-data">
+                <form class="forms-sample" method="POST" action="{{ route('store.helpCategoryStore') }}"
+                    enctype="multipart/form-data">
                     {!! csrf_field() !!}
                     <div class="row">
 
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label class="form-label" for="name">Help Category Name</label>
-                                <input type="text" class="form-control" id="name" placeholder="Help Category Name"
-                                    name="name" value="">
+                                <input type="text" class="form-control{{ $errors->has('name') ? ' has-error' : '' }}"
+                                    id="name" placeholder="Help Category Name" name="name" value="">
+                                @if ($errors->has('name'))
+                                    <br />
+                                    <div class="alert alert-danger">
+                                        <i class="ti-info-alt"></i> Help Category Name Can Not Be Empty
+                                    </div>
+                                @endif
                             </div>
                         </div>
 
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label class="form-label" for="user">User</label>
-                                <select class="form-control" id="user" name="User">
+                                <label class="form-label" for="user_id">User</label>
+                                <select class="form-control" id="user_id" name="user_id">
                                     <option>-------Select------</option>
-                                    <option value="0">User !</option>
-                                    <option value="0">User !</option>
-                                    <option value="0">User !</option>
-                                    <option value="0">User !</option>
+                                    @foreach ($users as $item)
+                                        {{-- <option value="{{ $item->id }}">{{ $item->role }}
+                                            <?php $roles = \App\Models\Role::where('id', $item->role)->first(); ?>
+                                            {{ $roles->name }}
+                                        </option> --}}
+                                        <option value="{{ $item->id }}">
+                                            <?php $roles = \App\Models\Role::where('id', $item->role)->first(); ?>
+                                            {{ $roles->name }}
+                                        </option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>

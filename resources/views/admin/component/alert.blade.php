@@ -4,14 +4,8 @@
     </div>
 @endif
 
-@if (session('error'))
-    <div class="alert alert-fill-danger">
-        <i class="ti-info-alt"></i> {{ session('error') }}
-    </div>
-@endif
-
 @if (session('status'))
-    <div class="alert alert-fill-success">
+    <div class="alert alert-fill-primary">
         <i class="ti-info-alt"></i> {{ session('status') }}
     </div>
 @endif
@@ -26,4 +20,10 @@
         <div class="alert alert-fill-danger">
             <i class="ti-info-alt"></i> {{ session('warning') }}
          </div>
+@endif
+
+@if (session('error'))
+    <div class="alert alert-fill-danger">
+        <i class="ti-info-alt"></i> {{ session('error') }}
+    </div>
 @endif

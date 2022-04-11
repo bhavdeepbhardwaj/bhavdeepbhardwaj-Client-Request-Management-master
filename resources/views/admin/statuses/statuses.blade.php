@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('title')
-    @lang('title.admin_statuses')
+    @lang('title.super_admin_statuses')
 @endsection
 
 @section('css')
@@ -60,6 +60,7 @@
     <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
+                @include('admin.component.alert')
                 <div class="table-responsive">
                     <table id="order-listing" class="table table-hover table-striped">
                         <thead>

@@ -28,6 +28,13 @@ return [
     'super_admin_user_create'       => 'ASHPlan | Media | CRM | SuperAdmin | Create | User',
     'super_admin_client_create'     => 'ASHPlan | Media | CRM | SuperAdmin | Create | Client',
     'super_admin_show_user_client'  => 'ASHPlan | Media | CRM | SuperAdmin | Show | User | Client',
+    'super_admin_statuses'          => 'ASHPlan | Media | CRM | SuperAdmin | Statuses',
+    'super_admin_role'              => 'ASHPlan | Media | CRM | SuperAdmin | Roles',
+    'super_admin_priorities'        => 'ASHPlan | Media | CRM | SuperAdmin | Priorities',
+    'super_admin_country'           => 'ASHPlan | Media | CRM | SuperAdmin | Country',
+    'super_admin_category'          => 'ASHPlan | Media | CRM | SuperAdmin | Category',
+    'super_admin_help_category'     => 'ASHPlan | Media | CRM | SuperAdmin | Help | Category',
+
 
     // Admin Title's
 

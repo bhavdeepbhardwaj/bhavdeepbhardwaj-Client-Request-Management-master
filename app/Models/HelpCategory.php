@@ -11,5 +11,6 @@ class HelpCategory extends Model
 
     protected $fillable = [
         'name',
+        'user_id',
     ];
 }

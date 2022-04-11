@@ -12,7 +12,8 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form class="forms-sample" method="POST" action="" enctype="multipart/form-data">
+                <form class="forms-sample" method="POST" action="{{ route('store.countryStore') }}"
+                    enctype="multipart/form-data">
                     {!! csrf_field() !!}
                     <div class="row">
 
@@ -26,13 +27,15 @@
 
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label class="form-label" for="user">User</label>
-                                <select class="form-control" id="user" name="User">
+                                <label class="form-label" for="user_id">User</label>
+                                <select class="form-control" id="user_id" name="user_id">
                                     <option>-------Select------</option>
-                                    <option value="0">User !</option>
-                                    <option value="0">User !</option>
-                                    <option value="0">User !</option>
-                                    <option value="0">User !</option>
+                                    @foreach ($role as $item)
+                                        <option value="{{ $item->id }}">{{ $item->name }}
+                                            <?php $users = \App\Models\User::where('id', $item->id)->first(); ?>
+                                            {{ $users->name }}
+                                        </option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
