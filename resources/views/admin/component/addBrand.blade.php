@@ -12,15 +12,15 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form class="forms-sample" method="POST" action="{{ route('store.countryStore') }}"
+                <form class="forms-sample" method="POST" action="{{ route('store.brandStore') }}"
                     enctype="multipart/form-data">
                     {!! csrf_field() !!}
                     <div class="row">
 
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label class="form-label" for="name">Country Name</label>
-                                <input type="text" class="form-control" id="name" placeholder="Country Name"
+                                <label class="form-label" for="name">Brand Name</label>
+                                <input type="text" class="form-control" id="name" placeholder="Brand Name"
                                     name="name" value="">
                             </div>
                         </div>

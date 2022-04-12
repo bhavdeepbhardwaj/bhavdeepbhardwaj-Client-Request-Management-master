@@ -109,6 +109,7 @@ class UserController extends Controller
     function show_ticket()
     {
         $tickets = Ticket::latest()->orderBy('id', 'desc')->get();
+        // $tickets = Ticket::where('user_id', Auth::user()->id)->orderBy('id', 'desc')->get();
         return view('user.ticket.show_ticket', compact('tickets'));
     }
 

@@ -37,8 +37,8 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    // protected $redirectTo = RouteServiceProvider::HOME;
-    public $redirectTo;
+    protected $redirectTo = RouteServiceProvider::HOME;
+    // public $redirectTo;
 
     /**
      * Create a new controller instance.
@@ -76,18 +76,18 @@ class RegisterController extends Controller
     public function create(array $data)
     {
         // dd($data);
-        return User::create([
+        $newuser = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'role' =>3,
             'prefix' =>'DEMO',
             'password' => Hash::make($data['password']),
         ]);
-    }
 
-    public function showRegistrationForm()
-    {
-        return view('auth.register');
+        $newuser->save();
+        // dd($newuser);
+        return redirect()->back()->with("status", "User is created.");
+
     }
 
     public function register(Request $request)
@@ -96,15 +96,23 @@ class RegisterController extends Controller
 
         event(new Registered($user = $this->create($request->all())));
 
-        $this->guard()->login($user);
+        return redirect()->back()->with("status", "User is created.");
 
-        if ($response = $this->registered($request, $user)) {
-            return $response;
-        }
 
-        return $request->wantsJson()
-                    ? new JsonResponse([], 201)
-                    : redirect($this->redirectPath());
+        // $this->guard()->login($user);
+
+        // if ($response = $this->registered($request, $user)) {
+        //     return $response;
+        // }
+
+        // return $request->wantsJson()
+        //             ? new JsonResponse([], 201)
+        //             : redirect($this->redirectPath());
+    }
+
+    public function showRegistrationForm()
+    {
+        return view('auth.register');
     }
 
     public function guard()

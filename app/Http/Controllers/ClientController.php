@@ -250,7 +250,9 @@ class ClientController extends Controller
 
     function show_ticket()
     {
-        $tickets = Ticket::orderBy('id', 'DESC')->get();
+        // $tickets = Ticket::orderBy('id', 'DESC')->get();
+        $tickets = Ticket::where('user_id', Auth::user()->id)->get();
+        // dd($tickets);
         return view('client.ticket.show_ticket', compact('tickets'));
     }
 
@@ -316,7 +318,8 @@ class ClientController extends Controller
 
     function view_comment()
     {
-        $view_comment = Comment::orderBy('id', 'DESC')->get();
+        // $view_comment = Comment::orderBy('id', 'DESC')->get();
+        $view_comment = Comment::where('user_id', Auth::user()->id)->get();
         return view('client.comment.view_comment', compact('view_comment'));
     }
 

@@ -57,6 +57,12 @@
             </a>
         </li>
         <li class="nav-item">
+            <a class="nav-link " href="{{ route('admin.brand')}}">
+                <i class="menu-icon mdi mdi-card-text-outline"></i>
+                <span class="menu-title">Brands</span>
+            </a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link " href="{{ route('admin.category') }}">
                 <i class="menu-icon mdi mdi-card-text-outline"></i>
                 <span class="menu-title">Category</span>

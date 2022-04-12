@@ -41,11 +41,11 @@
                     enctype="multipart/form-data">
                     {!! csrf_field() !!}
                     <div class="row">
-                        <input type="hidden" class="form-control" id="exampleInputTitle1" placeholder="ID" name="user_id"
+                        <input type="" class="form-control" id="exampleInputTitle1" placeholder="ID" name="user_id"
                             value="{{ Auth::user()->id }}">
-                        <input type="hidden" class="form-control" id="exampleInputTitle2" placeholder="Prefix" name="job"
+                        <input type="" class="form-control" id="exampleInputTitle2" placeholder="Prefix" name="job"
                             value="{{ $prefixvalue }}">
-                        <input type="hidden" class="form-control" id="exampleInputTitle3" placeholder="Job No"
+                        <input type="" class="form-control" id="exampleInputTitle3" placeholder="Job No"
                             name="job_no" value="">
 
                         <div class="col-md-6">

@@ -58,6 +58,7 @@
     <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
+                @include('admin.component.alert')
                 <div class="table-responsive">
                     <table id="order-listing" class="table table-hover table-striped">
                         <thead>

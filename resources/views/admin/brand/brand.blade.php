@@ -36,10 +36,10 @@
                                                         <!-- Edit  Button trigger modal -->
                                                         <button type="button" class="btn btn-primary" data-toggle="modal"
                                                             data-target="#exampleModalScrollable" style="color: #fff;">
-                                                            Add Country
+                                                            Add Brands
                                                         </button>
                                                         <!-- Edit Modal -->
-                                                        @include('admin.component.addCountry')
+                                                        @include('admin.component.addBrand')
                                                     </div>
                                                 </div>
                                             </div>
@@ -69,7 +69,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($countrys as $item)
+                            @foreach ($brands as $item)
                                 <tr>
                                     <td>{{ $item->created_at }}</td>
                                     <td>{{ $item->name }}</td>

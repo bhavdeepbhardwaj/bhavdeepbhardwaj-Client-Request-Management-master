@@ -44,30 +44,51 @@ Route::group(['prefix' => 'SuperAdmin', 'middleware' => ['isAdmin', 'auth', 'Pre
     Route::get('setting', [AdminController::class, 'setting'])->name('admin.setting');
     Route::get('reports', [AdminController::class, 'reports'])->name('admin.reports');
 
+    // Roles
+    Route::get('roles', [AdminController::class, 'role'])->name('admin.role');
+
+    // Brands
+    Route::get('brand', [AdminController::class, 'brand'])->name('admin.brand');
+    Route::post('brand/store/', [AdminController::class, 'brandStore'])->name('store.brandStore');
+
+    // Ticket
     Route::get('ticket', [AdminController::class, 'ticket'])->name('admin.ticket');
     Route::get('details_ticket', [AdminController::class, 'details_ticket'])->name('admin.details_ticket');
 
+    // Help
     Route::get('help', [AdminController::class, 'help'])->name('admin.help');
     Route::get('help-info/{id}', [AdminController::class, 'info_help'])->name('admin.info-help');
 
-    Route::get('roles', [AdminController::class, 'role'])->name('admin.role');
-    Route::get('category', [AdminController::class, 'category'])->name('admin.category');
-
-    Route::get('country', [AdminController::class, 'country'])->name('admin.country');
-    Route::post('/store/',[AdminController::class, 'countryStore'])->name('store.countryStore');
-
+    // Help Category
     Route::get('helpCategory', [AdminController::class, 'helpCategory'])->name('admin.helpCategory');
-    Route::post('helpCategory/store/',[AdminController::class, 'helpCategoryStore'])->name('store.helpCategoryStore');
+    Route::post('helpCategory/store/', [AdminController::class, 'helpCategoryStore'])->name('store.helpCategoryStore');
 
+    // Category
+    Route::get('category', [AdminController::class, 'category'])->name('admin.category');
+    Route::post('category/store/', [AdminController::class, 'categoryStore'])->name('store.categoryStore');
+
+    // Country
+    Route::get('country', [AdminController::class, 'country'])->name('admin.country');
+    Route::post('country/store/', [AdminController::class, 'countryStore'])->name('store.countryStore');
+
+    // Priorities
     Route::get('priorities', [AdminController::class, 'priorities'])->name('admin.priorities');
-    Route::post('priorities/store/',[AdminController::class, 'prioritiesStore'])->name('store.prioritiesStore');
+    Route::post('priorities/store/', [AdminController::class, 'prioritiesStore'])->name('store.prioritiesStore');
 
+    // Statuses
     Route::get('statuses', [AdminController::class, 'statuses'])->name('admin.statuses');
-    Route::post('statuses/store/',[AdminController::class, 'statusesStore'])->name('store.statusesStore');
+    Route::post('statuses/store/', [AdminController::class, 'statusesStore'])->name('store.statusesStore');
 
+    // Account
     Route::get('show_account', [AdminController::class, 'show_account'])->name('admin.show_account');
-    Route::get('create_ADMIN_account', [AdminController::class, 'create_ADMIN_account'])->name('admin.create_ADMIN_account');
-    Route::get('create_CLIENT_account', [AdminController::class, 'create_CLIENT_account'])->name('admin.create_CLIENT_account');
+
+    // User(Agency) Create
+    Route::get('create_admin_account', [AdminController::class, 'create_ADMIN_account'])->name('admin.create_ADMIN_account');
+    Route::post('create_admin_account/create', [AdminController::class, 'createAdmin'])->name('admin.createAdmin');
+
+    // Client Create
+    Route::get('create_client_account', [AdminController::class, 'create_CLIENT_account'])->name('admin.create_CLIENT_account');
+    Route::post('create_client_account/create', [AdminController::class, 'createClient'])->name('admin.createClient');
 });
 
 

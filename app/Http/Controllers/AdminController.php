@@ -12,6 +12,11 @@ use App\Models\role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Auth\Events\Registered;
+use App\Http\Controllers\Controller;
+use App\Models\Brand;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class AdminController extends Controller
 {
@@ -69,30 +74,108 @@ class AdminController extends Controller
 
     function create_ADMIN_account()
     {
-        return view('admin.account.create_ADMIN_account');
+        $role = Role::where('name','User')->first();
+        // dd($role->id);
+        return view('admin.account.create_ADMIN_account', ['role' => $role]);
+    }
+
+    function createAdmin(Request $request)
+    {
+        // dd($request->all());
+        $this->validator($request->all())->validate();
+
+        event(new Registered($user = $this->create($request->all())));
+
+        return redirect()->back()->with("status", "User is created.");
+    }
+
+    public function validator(array $data)
+    {
+        return Validator::make($data, [
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
+    }
+
+    public function create(array $data)
+    {
+        // dd($data);
+        $newuser = User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'role' => $data['role'],
+            'prefix' => $data['prefix'],
+            'is_admin' => 0,
+            'password' => Hash::make($data['password']),
+        ]);
+
+        $newuser->save();
+        // dd($newuser);
+        return redirect()->back()->with("status", "User is created.");
     }
 
     function create_CLIENT_account()
     {
-        return view('admin.account.create_CLIENT_account');
+        $role = Role::where('name','Client')->first();
+        return view('admin.account.create_CLIENT_account', ['role' => $role]);
+    }
+
+    function createClient(Request $request)
+    {
+        // dd($request->all());
+        $this->validator($request->all())->validate();
+
+        event(new Registered($user = $this->create($request->all())));
+
+        return redirect()->back()->with("status", "User is created.");
     }
 
     function category()
     {
         $category = Category::get();
-        return view('admin.category.category', ['category' => $category]);
+        $users = DB::table('users')->where('role', 3)->get();
+        return view('admin.category.category', ['category' => $category], ['users' => $users]);
+    }
+
+    function categoryStore(Request $request)
+    {
+        $request->validate([
+            'name'      => 'required',
+            'user_id'   => 'required',
+        ]);
+        // dd($request->all());
+        Category::create($request->all());
+
+        return redirect()->back()->with("status", "New Category Created Successfully.");
+    }
+
+    function brand()
+    {
+        $brands = Brand::get();
+        $users = DB::table('users')->where('role', 3)->get();
+        return view('admin.brand.brand', ['brands' => $brands], ['users' => $users]);
+    }
+
+    function brandStore(Request $request)
+    {
+        $request->validate([
+            'name'      => 'required',
+            'user_id'   => 'required',
+        ]);
+        // dd($request->all());
+        Brand::create($request->all());
+
+        return redirect()->back()->with("status", "New Brand Created Successfully.");
     }
 
     function country()
     {
         $countrys = Country::get();
-        // $user = 'Client';
-        // $user = DB::table('roles')->where('name', 'Client')->get();
-        // dd($user);
-        // $role = DB::table('users')->where('role', 3)->get();
-        // dd($role);
+        $users = DB::table('users')->where('role', 3)->get();
+        // dd($users);
         // return view('admin.country.country', ['countrys' => $countrys], ['role' => $role]);
-        return view('admin.country.country', ['countrys' => $countrys]);
+        return view('admin.country.country', ['countrys' => $countrys], ['users' => $users]);
     }
 
     function countryStore(Request $request)
@@ -101,7 +184,7 @@ class AdminController extends Controller
             'name'      => 'required',
             'user_id'   => 'required',
         ]);
-        dd($request->all());
+        // dd($request->all());
         Country::create($request->all());
 
         return redirect()->back()->with("status", "New Country Created Successfully.");
