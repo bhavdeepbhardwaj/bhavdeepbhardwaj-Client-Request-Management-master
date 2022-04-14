@@ -53,7 +53,7 @@ Route::group(['prefix' => 'SuperAdmin', 'middleware' => ['isAdmin', 'auth', 'Pre
 
     // Ticket
     Route::get('ticket', [AdminController::class, 'ticket'])->name('admin.ticket');
-    Route::get('details_ticket', [AdminController::class, 'details_ticket'])->name('admin.details_ticket');
+    Route::get('ticket/details_ticket/{id}', [AdminController::class, 'details_ticket'])->name('admin.details_ticket');
 
     // Help
     Route::get('help', [AdminController::class, 'help'])->name('admin.help');

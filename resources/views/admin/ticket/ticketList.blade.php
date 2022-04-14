@@ -63,16 +63,67 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Date</td>
-                                <td>SRN</td>
-                                <td>Brand</td>
-                                <td>Country</td>
-                                <td><a href="{{ route('admin.details_ticket') }}"> Project Title</a></td>
-                                <td>Category</td>
-                                <td><label class="badge badge-danger">Priority</label></td>
-                                <td>Status</td>
-                            </tr>
+                            @foreach ($tickets as $ticket_detail)
+                                        <tr>
+                                            <td>{{ date('d-m-Y h:i:s A', strtotime($ticket_detail->created_at)) }}</td>
+                                            <td>{{ $ticket_detail->job }}</td>
+                                            <td>
+                                                <?php $brands = \App\Models\Brand::where('id', $ticket_detail->brand)->first(); ?>
+                                                {{ $brands->name }}
+                                            </td>
+                                            <td>
+                                                <?php $countrys = \App\Models\Country::where('id', $ticket_detail->country)->first(); ?>
+                                                {{ $countrys->name }}
+                                            </td>
+                                            <td>
+                                                <a href="{{ route('admin.details_ticket', [$ticket_detail->id]) }}"
+                                                    style="text-decoration: none;">{{ $ticket_detail->title }}&nbsp;<i
+                                                        class="ti-eye"></i></a>
+                                            </td>
+
+                                            <td>
+                                                <?php $categorys = \App\Models\Category::where('id', $ticket_detail->category)->first(); ?>
+                                                {{ $categorys->name }}
+                                            </td>
+                                            <td>
+                                                @if ($ticket_detail->priority == 1)
+                                                    <label class="badge badge-info">
+                                                        <?php $prioritys = \App\Models\Priority::where('id', $ticket_detail->priority)->first(); ?>
+                                                        {{ $prioritys->name }}
+                                                    </label>
+                                                @elseif ($ticket_detail->priority == 2)
+                                                    <div class="badge badge-primary">
+                                                        <?php $prioritys = \App\Models\Priority::where('id', $ticket_detail->priority)->first(); ?>
+                                                        {{ $prioritys->name }}
+                                                    </div>
+                                                @elseif ($ticket_detail->priority == 3)
+                                                    <label class="badge badge-danger">
+                                                        <?php $prioritys = \App\Models\Priority::where('id', $ticket_detail->priority)->first(); ?>
+                                                        {{ $prioritys->name }}
+                                                    </label>
+                                                @endif
+
+                                            </td>
+                                            <td>
+                                                <?php $statuss = \App\Models\Status::where('id', $ticket_detail->status)->first(); ?>
+                                                {{ $statuss->name }}
+                                            </td>
+                                            <td>
+                                                {{-- {{ $comments->job }} --}}
+                                                @if ($ticket_detail->commentnos == '0')
+                                                    N/A
+                                                @else
+                                                    <label class="badge badge-primary">
+                                                        <a href="{{ route('client.comment.comment_detail', [$ticket_detail->id]) }}"
+                                                            class="text-decoration-none">{{ $ticket_detail->commentnos }}
+                                                        </a>
+                                                    </label>
+                                                @endif
+
+                                                {{-- <a href="{{ route('client.comment.comment_detail', [$ticket_detail->id]) }}">{{$ticket_detail->commentnos}} </a> --}}
+                                            </td>
+                                        </tr>
+                                    @endforeach
                         </tbody>
                     </table>
                 </div>

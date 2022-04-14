@@ -20,8 +20,14 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label class="form-label" for="name">Brand Name</label>
-                                <input type="text" class="form-control" id="name" placeholder="Brand Name"
+                                <input type="text" class="form-control{{ $errors->has('name') ? ' has-error' : '' }}" id="name" placeholder="Brand Name"
                                     name="name" value="">
+                                    @if ($errors->has('name'))
+                                    <br />
+                                    <div class="alert alert-danger">
+                                        <i class="ti-info-alt"></i> Brand Name Can Not Be Empty
+                                    </div>
+                                @endif
                             </div>
                         </div>
 

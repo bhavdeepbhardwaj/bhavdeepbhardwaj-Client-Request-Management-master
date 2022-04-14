@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Auth\Events\Registered;
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
+use App\Models\Ticket;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -57,12 +58,14 @@ class AdminController extends Controller
 
     function ticket()
     {
-        return view('admin.ticket.ticketList');
+        $tickets = Ticket::orderBy('id', 'DESC')->get();
+        return view('admin.ticket.ticketList', ['tickets' => $tickets]);
     }
 
-    function details_ticket()
+    function details_ticket($id)
     {
-        return view('admin.ticket.details_ticket');
+        $ticket_detail = Ticket::where('id', $id)->get()->first();
+        return view('admin.ticket.details_ticket', ['ticket_detail' => $ticket_detail]);
     }
 
     function show_account()

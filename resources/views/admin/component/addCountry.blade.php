@@ -20,8 +20,14 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label class="form-label" for="name">Country Name</label>
-                                <input type="text" class="form-control" id="name" placeholder="Country Name"
-                                    name="name" value="">
+                                <input type="text" class="form-control{{ $errors->has('name') ? ' has-error' : '' }}"
+                                    id="name" placeholder="Country Name" name="name" value="">
+                                @if ($errors->has('name'))
+                                    <br />
+                                    <div class="alert alert-danger">
+                                        <i class="ti-info-alt"></i> Country Name Can Not Be Empty
+                                    </div>
+                                @endif
                             </div>
                         </div>
 
@@ -30,12 +36,7 @@
                                 <label class="form-label" for="user_id">User</label>
                                 <select class="form-control" id="user_id" name="user_id">
                                     <option>-------Select------</option>
-                                    @foreach ($users as $item)
-                                        <option value="{{ $item->id }}">{{ $item->name }}
-                                            <?php $users = \App\Models\User::where('id', $item->id)->first(); ?>
-                                            {{ $users->name }}
-                                        </option>
-                                    @endforeach
+
                                 </select>
                             </div>
                         </div>
